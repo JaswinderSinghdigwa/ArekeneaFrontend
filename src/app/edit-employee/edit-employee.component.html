@@ -52,7 +52,7 @@
 
         <div class="form-group">
           <label for="inputEmail3">image</label>
-          <input class="form-control" type="file" formControlName="image" />
+          <input class="form-control" type="file" (change)="onFileSelected($event)" formControlName="image" />
           </div>
         <!-- <div class="form-group">
           <label for="inputPassword3">Designation</label>

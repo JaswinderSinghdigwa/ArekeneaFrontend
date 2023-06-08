@@ -10,6 +10,7 @@ import { ApiServiceService } from '../api-service.service';
 })
 export class EditEmployeeComponent {
   submitted = false;
+  selectedFile!:File
   editForm!: FormGroup;
   constructor(
     public fb: FormBuilder,
@@ -35,6 +36,10 @@ export class EditEmployeeComponent {
       image:['',[Validators.required]],
       phoneNo: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
     });
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
   }
 
   // Getter to access form control
@@ -78,6 +83,12 @@ export class EditEmployeeComponent {
     } else {
       if (window.confirm('Are you sure?')) {
         let id:any = this.actRoute.snapshot.paramMap.get('id');
+        const formData = new FormData();
+      formData.append('name', this.editForm?.value.name);
+      formData.append('email', this.editForm?.value.email);
+      formData.append('password', this.editForm?.value.password);
+      formData.append('phoneNo', this.editForm?.value.phoneNo);
+      formData.append('image', this.selectedFile)
        return this.apiService.updateEmployee(id, this.editForm?.value).subscribe({
           complete: () => {
             return this.router.navigateByUrl('/employees-list');
